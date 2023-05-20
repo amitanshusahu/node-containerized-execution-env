@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <input type="text" id="code">
+    <button onclick="runCode()"> run code </button>
+    <button onclick="submitCode()"> submit code </button>
+</body>
+
+<script>
+
+    async function runCode() {
+        let submitedCode = document.querySelector("#code").value.toString();
+
+        // hit the /submission
+        let data = {
+            problemId: "1",
+            submission: {
+                language: "js",
+                code: submitedCode
+            }
+        }
+        let options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(data)
+        }
+        const res = await fetch("http://localhost:3001/submissions", options);
+
+    }
+</script>
+
+</html>
