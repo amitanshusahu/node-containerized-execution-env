@@ -9,21 +9,48 @@
 </head>
 
 <body>
-    <input type="text" id="code">
-    <button onclick="runCode()"> run code </button>
-    <button onclick="submitCode()"> submit code </button>
+
+    <section>
+        <!-- <button > select language </button> -->
+        <textarea type="text" id="code" spellcheck=”false”></textarea>
+
+        <div class="optionBtn">
+            <select name="code" id="select-lang" onchange="changeLanguage()">
+                <option value="js"> JavaScript </option>
+                <option value="c"> C </option>
+                <option value="cpp"> C++ </option>
+            </select>
+            <button onclick="runCode()" id="runCode"> run </button>
+        </div>
+
+    </section>
+
+    <div class="output">
+        <h4>Terminal (read only)</h4>
+        <div id="output"></div>
+    </div>
+
 </body>
 
 <script>
+    let language = document.getElementById("select-lang").value;
+
+    function changeLanguage(){
+        language = document.getElementById("select-lang").value;
+    }
 
     async function runCode() {
+        //get code from input
         let submitedCode = document.querySelector("#code").value.toString();
+        submitedCode = parseCode(submitedCode);
+        console.log(submitedCode);
+        console.log(language);
 
         // hit the /submission
         let data = {
             problemId: "1",
             submission: {
-                language: "js",
+                language: language,
                 code: submitedCode
             }
         }
@@ -34,9 +61,23 @@
             },
             body: JSON.stringify(data)
         }
-        const res = await fetch("http://localhost:3001/submissions", options);
+        let res = await fetch("http://localhost:3010/submissions", options);
 
+        // get the output as a responce from the server
+        let output = await res.json();
+
+        // show output in the output box
+        document.getElementById('output').innerText = output;
     }
+
+    function parseCode(code){
+        if(language == "c" || language == "cpp"){
+            return code.replace(/"/g, '\\"');
+        }else{
+            return code;
+        }
+    }
+
 </script>
 
 </html>

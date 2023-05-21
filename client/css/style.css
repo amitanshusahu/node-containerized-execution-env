@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+}
+
+body{
+    width: 100%;
+    max-width: 1444px;
+    margin: auto;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+    padding: 30px;
+    gap: 30px;
+}
+
+button{
+    padding: 5px 10px;
+    border: 2px solid rgb(66, 66, 66);
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(75, 75, 75);
+    cursor: pointer;
+}
+button:hover{
+    scale: 1.05;
+}
+select{
+    padding: 5px 10px;
+    margin-right: 15px;
+}
+
+section{
+    position: relative;
+}
+
+#code{
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    padding: 15px;
+    border: 2px solid gray;
+    resize: none;
+}
+#code:focus{
+    outline: 2px solid lightgrey;
+}
+
+.optionBtn{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.output{
+    position: relative;
+}
+
+.output h4{
+    position: absolute;
+    color: rgba(255, 255, 255, 0.582);
+    top: 15px;
+    right: 15px;
+}
+
+#output{
+    width: 100%;
+    height: 300px;
+    background-color: rgb(2, 0, 36);
+    border-radius: 15px;
+    padding: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+    overflow-y: scroll;
+}

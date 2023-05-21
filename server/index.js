@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3001
+const port = 3010
 const cors = require("cors");
 const docker = new require("dockerode")();
 const amqp = require("amqplib");
@@ -21,7 +21,7 @@ app.use(cors());
 /// ------------------ RCP SERVER(WORKER) -------------------
 
 async function startRcpServerAsWorker() {
-  console.log("statingRcpServer")
+
   //connect to rabbitmq
   const { connection, channel } = await connectRabbitMQ();
 
@@ -123,7 +123,21 @@ async function createDockerContainer(language, code) {
 function getDockerImage(language) {
 
   let image;
-  image = "node";
+
+  switch (language) {
+    case 'cpp':
+      image = "gcc"
+      break;
+    case "js":
+      image = "node";
+      break;
+    case "c": 
+      image = "gcc";
+      break;
+    default:
+      throw new Error(`unsupprted language: ${language}`);
+  }
+
   return image;
 
 }
@@ -132,12 +146,17 @@ function getDockerImage(language) {
 function getExecutionCommand(language, code){
 
   let cmd;
+
   switch (language) {
     case 'cpp':
-      cmd = ["g++", "-o", code, "-x", "c++", "-"];
+      cmd = ['bash', '-c', `echo "${code}" > myapp.cpp && g++ -o myapp myapp.cpp && ./myapp`];
       break;
     case "js":
       cmd = ["node", "-e", code];
+      break;
+    case "c":
+      console.log(code);
+      cmd = ['bash', '-c', `echo "${code}" > myapp.c && gcc -o myapp myapp.c && ./myapp`];
       break;
     default:
       throw new Error(`unsupprted language: ${language}`);
@@ -200,33 +219,28 @@ app.post("/submissions", async (req, res) => {
 
 /// ------------- SCALE USING CLUSTER ----------------
 
-// if (cluster.isMaster) {
-//   for (let i = 0; i < 2; i++) {
-//     cluster.fork();
-//   }
-
-//   cluster.on("exit", (worker, code, signal) => {
-//     console.log(`worker ${worker.process.pid} exited`);
-//     cluster.fork();
-//   });
-// }
-// else {
-  startRcpServerAsWorker();
-// }
-
-
-
-
-// --------- Start Express Server ----------
-
-const server = app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
-server.on('error', (error) => {
-  if (error.code === 'EADDRINUSE') {
-    console.log(`Port ${port} is already in use`);
-  } else {
-    console.error('An error occurred:', error);
+if (cluster.isMaster) {
+  for (let i = 0; i < 4; i++) {
+    cluster.fork();
   }
-});
+
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} exited`);
+    cluster.fork();
+  });
+}
+else {
+  startRcpServerAsWorker();
+
+  const server = app.listen(port, () => {
+    console.log(`server ${process.pid} is listening on port ${port}`)
+  })
+
+  server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+      console.log(`Port ${port} is already in use`);
+    } else {
+      console.error('An error occurred:', error);
+    }
+  });
+}
