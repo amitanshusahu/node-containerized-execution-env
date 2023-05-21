@@ -111,6 +111,9 @@ async function createDockerContainer(language, code) {
     Image: getDockerImage(language), //node
     Cmd: getExecutionCommand(language, code), // ["node", "-e", code]
     Tty: true,
+    // HostConfig: {
+    //   StopTimeout: 2, // Stop the container after 2 seconds
+    // },
   }
   // same as docker create --image imageName --tty --command cmdToRun
   const container = await docker.createContainer(containerConfig) 
@@ -176,17 +179,28 @@ async function executeUserCodeInContainer(code, language) {
     console.log("executing code");
     const container = await createDockerContainer(language, code);
     await container.start();
+
+    // send a TLE after 2sec
+    const tle = setTimeout(async () => {
+      console.log("sending a tle")
+      resolve({result: "Time Limit Exceed!! 😔 \n \t Optimize your code \n \t Avoid infinite loops", sucess: false});
+      await container.stop();
+    }, 2000);
+
     const containerExitStatus = await container.wait(); // wait for container to exit
-    await container.start();    // start container
 
     // get logs
     const logs = await container.logs({ stdout: true, stderr: true });
 
     // return output/error
     if (containerExitStatus.StatusCode === 0) {
-      resolve({ result: logs.toString() });
+      resolve({ result: logs.toString(), sucess: true });
+      clearTimeout(tle);
+      await container.remove();
     } else {
-      resolve({ result: logs.toString() });
+      resolve({ result: logs.toString(), sucess: false });
+      clearTimeout(tle);
+      await container.remove();
     }
   });
 }
