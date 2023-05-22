@@ -52,10 +52,11 @@ section{
     font-weight: 500;
     font-family: 'Courier New', Courier, monospace;
     background-color: rgb(41, 43, 56);
+    outline: none;
     color: white;
 }
 #code:focus{
-    outline: 2px solid rgb(54, 54, 54);
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
 }
 
 .optionBtn{
