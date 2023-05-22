@@ -6,6 +6,7 @@ const docker = new require("dockerode")();
 const amqp = require("amqplib");
 const { v4: uuidv4 } = require('uuid');
 const cluster = require("cluster");
+const os = require("os");
 
 
 
@@ -183,7 +184,7 @@ async function executeUserCodeInContainer(code, language) {
     // send a TLE after 2sec
     const tle = setTimeout(async () => {
       console.log("sending a tle")
-      resolve({result: "Time Limit Exceed!! 😔 \n \t Optimize your code \n \t Avoid infinite loops", sucess: false});
+      resolve({result: "Time Limit Exceed!! 😔 \n \n - Optimize your code \n - Avoid infinite loops", sucess: false});
       await container.stop();
     }, 2000);
 
@@ -233,8 +234,12 @@ app.post("/submissions", async (req, res) => {
 
 /// ------------- SCALE USING CLUSTER ----------------
 
+// get cpu threads
+let cpuThreads = os.cpus().length;  // 12 (my i5 12400)
+if ( cpuThreads >= 4 ) cpuNum = 4; // limit worker to 4
+
 if (cluster.isMaster) {
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < cpuNum; i++) {
     cluster.fork();
   }
 
