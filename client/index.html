@@ -10,9 +10,9 @@
 
 <body>
 
-    <section>
-        <!-- <button > select language </button> -->
-        <textarea type="text" id="code" spellcheck=”false”></textarea>
+    <section spellcheck="false">
+
+        <textarea type="text" id="code" spellcheck=”false” placeholder="Write Your Code Here..."></textarea>
 
         <div class="optionBtn">
             <select name="code" id="select-lang" onchange="changeLanguage()">
@@ -43,8 +43,6 @@
         //get code from input
         let submitedCode = document.querySelector("#code").value.toString();
         submitedCode = parseCode(submitedCode);
-        console.log(submitedCode);
-        console.log(language);
 
         // hit the /submission
         let data = {
@@ -67,7 +65,20 @@
         let output = await res.json();
 
         // show output in the output box
-        document.getElementById('output').innerText = output;
+        let outputBox = document.getElementById('output');
+        outputBox.innerText = parseLogs(output.result);
+
+        // chage color according to sucess status
+        if(output.sucess){
+            outputBox.style.color = "lightgreen";
+            outputBox.scrollTop = outputBox.scrollHeight; // scroll to bottom
+        }else{
+            outputBox.style.color = "lightcoral";
+            outputBox.scrollTop = outputBox.scrollHeight; // scroll to bottom
+        }
+
+        // hide terminal heading
+        document.querySelector(".output h4").style.display = "none";
     }
 
     function parseCode(code){
@@ -75,6 +86,21 @@
             return code.replace(/"/g, '\\"');
         }else{
             return code;
+        }
+    }
+
+    function parseLogs(logs){
+        if(language == "js"){
+            return logs.replace(/\[90m/g, "... ")
+                        .replace(/\[39m/g, "");
+        }
+        else if (language == "c" || language == "cpp") {
+            console.log("i am working")
+            return logs.replace(/\x1B\[[0-9;]*[m]/g, "")
+                        .replace(/\[K/g, "");
+        }
+        else{
+            return logs
         }
     }
 

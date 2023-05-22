@@ -48,6 +48,8 @@ section{
     padding: 15px;
     border: 2px solid gray;
     resize: none;
+    font-weight: 500;
+    font-family: 'Courier New', Courier, monospace;
 }
 #code:focus{
     outline: 2px solid lightgrey;
@@ -79,4 +81,5 @@ section{
     font-family: 'Courier New', Courier, monospace;
     color: white;
     overflow-y: scroll;
+    scroll-behavior: smooth;
 }
