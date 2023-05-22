@@ -1,3 +1,5 @@
+![image](https://github.com/amitanshusahu/node-containerized-execution-env/assets/83657737/a7121218-e721-4f8f-a222-a4cb387884e0)
+
 ## Set Up the Project
 - clone the repo
 ```bash
@@ -63,4 +65,4 @@ loadtest -n 1000 -c 100 http://localhost:3010
     - [Scale node js app using cluster module and test it with loadTest](https://youtu.be/9RLeLngtQ3A)
 
 
-<h3 align="center"> Star the Repo :star </h3>
+<h3 align="center"> Star the Repo ⭐ </h3>
