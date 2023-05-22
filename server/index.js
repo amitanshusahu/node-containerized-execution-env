@@ -84,7 +84,7 @@ async function publishMessageToCodeExecutionQueue(connection, channel, code, lan
   channel.consume(responseQueueName, msg => {
       if (msg.properties.correlationId == correlationId) {
           const result = JSON.parse(msg.content.toString());
-          res.status(200).json(result.result);
+          res.status(200).json(result);
           console.log(result.result);
           channel.close();
           connection.close();
