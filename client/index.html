@@ -92,7 +92,8 @@
     function parseLogs(logs){
         if(language == "js"){
             return logs.replace(/\[90m/g, "... ")
-                        .replace(/\[39m/g, "");
+                        .replace(/\[39m/g, "")
+                        .replace(/\[33m/g, "");
         }
         else if (language == "c" || language == "cpp") {
             console.log("i am working")
