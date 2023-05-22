@@ -38,6 +38,18 @@ npx serve
 
 > make sure `3000`, `3010`, `5672` are not bussyyyy!!
 
+## load test
+- install loadtest
+```bash
+npm i -g loadtest
+```
+
+- test the server
+```bash
+# send 1000 reqs with an concorency level 100
+loadtest -n 1000 -c 100 http://localhost:3010
+```
+
 ## Refferences
 - [Remote Code Execution System just like kirat said](https://blog.devgenius.io/case-study-remote-code-execution-engine-system-63aa43344f24)
 - [Using RabbitMQ in node js app](https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html)
