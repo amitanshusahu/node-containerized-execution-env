@@ -9,7 +9,11 @@ https://github.com/amitanshusahu/node-containerized-execution-env/assets/8365773
 ```bash
 git clone https://github.com/amitanshusahu/node-containerized-execution-env.git
 ```
-- open the repo folder `cd <repo-name>`
+- open the server folder inside the repo folder 
+```bash
+cd  node-containerized-execution-env/server
+```
+
 - install all dependencies
 ```bash
 npm i
@@ -56,7 +60,7 @@ npm i -g loadtest
 loadtest -n 1000 -c 100 http://localhost:3010
 ```
 
-## Refferences
+## References
 - [Remote Code Execution System just like kirat said](https://blog.devgenius.io/case-study-remote-code-execution-engine-system-63aa43344f24)
 - [Using RabbitMQ in node js app](https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html)
 - [Docker Engine API to create and work with containers](https://docs.docker.com/engine/api/v1.42/#tag/Container/operation/ContainerCreate)
