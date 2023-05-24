@@ -1,4 +1,8 @@
-![image](https://github.com/amitanshusahu/node-containerized-execution-env/assets/83657737/a7121218-e721-4f8f-a222-a4cb387884e0)
+<div align="center"> 
+    
+https://github.com/amitanshusahu/node-containerized-execution-env/assets/83657737/df6c601a-6ec1-4a5c-a8ee-7c4b29a293c9
+
+</div>
 
 ## Set Up the Project
 - clone the repo
