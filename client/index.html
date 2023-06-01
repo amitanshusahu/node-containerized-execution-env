@@ -39,7 +39,7 @@
         language = document.getElementById("select-lang").value;
     }
 
-    async function runCode() {
+    let submitFunction = async runCode() => {
         //get code from input
         let submitedCode = document.querySelector("#code").value.toString();
         submitedCode = parseCode(submitedCode);
@@ -63,7 +63,7 @@
 
         // get the output as a responce from the server
         let output = await res.json();
-
+       
         // show output in the output box
         let outputBox = document.getElementById('output');
         outputBox.innerText = parseLogs(output.result);
